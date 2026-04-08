@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.10.2)
+project(xcrash C)
 
 #######################################
 # global
@@ -7,6 +8,14 @@ cmake_minimum_required(VERSION 3.4.1)
 add_compile_options(
         -std=c11
         -Weverything
+        -Wno-declaration-after-statement
+        -Wno-implicit-fallthrough
+        -Wno-implicit-int-float-conversion
+        -Wno-reserved-identifier
+        -Wno-strict-prototypes
+        -Wno-switch-default
+        -Wno-unsafe-buffer-usage
+        -Wno-unused-but-set-variable
         -Werror)
 
 #######################################
@@ -39,7 +48,8 @@ target_compile_options(xcrash PUBLIC
 
 set_target_properties(xcrash PROPERTIES
         LINK_FLAGS " \
-        -fsanitize=address")
+        -fsanitize=address \
+        -Wl,-z,max-page-size=16384")
 
 else()
 
@@ -53,6 +63,7 @@ set_target_properties(xcrash PROPERTIES
         LINK_FLAGS " \
         -O3 \
         -flto \
+        -Wl,-z,max-page-size=16384 \
         -Wl,--exclude-libs,ALL \
         -Wl,--gc-sections \
         -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/xcrash.exports")
@@ -121,7 +132,8 @@ target_compile_options(xcrash_dumper PUBLIC
 
 set_target_properties(xcrash_dumper PROPERTIES
         LINK_FLAGS " \
-        -fsanitize=address")
+        -fsanitize=address \
+        -Wl,-z,max-page-size=16384")
 
 else()
 
@@ -135,6 +147,7 @@ set_target_properties(xcrash_dumper PROPERTIES
         LINK_FLAGS " \
         -O3 \
         -flto \
+        -Wl,-z,max-page-size=16384 \
         -Wl,--exclude-libs,ALL \
         -Wl,--gc-sections")
 

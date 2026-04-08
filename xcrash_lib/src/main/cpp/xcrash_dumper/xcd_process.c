@@ -205,7 +205,7 @@ static int xcd_process_record_signal_info(xcd_process_t *self, int log_fd)
     char sender_desc[64] = "";
     if(xcc_util_signal_has_sender(self->si, self->pid))
     {
-        snprintf(sender_desc, sizeof(sender_desc), " from pid %d, uid %d", self->si->si_pid, self->si->si_uid);
+        snprintf(sender_desc, sizeof(sender_desc), " from pid %d, uid %u", self->si->si_pid, self->si->si_uid);
     }
 
     return xcc_util_write_format(log_fd, "signal %d (%s), code %d (%s%s), fault addr %s\n",

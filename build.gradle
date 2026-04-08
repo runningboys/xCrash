@@ -1,38 +1,21 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
 }
 
-allprojects {
-    repositories {
-        google()
-//      mavenLocal()
-        mavenCentral()
-        maven {url "https://s01.oss.sonatype.org/content/groups/public"}
-        maven {url "https://s01.oss.sonatype.org/content/repositories/releases"}
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }
 
 ext {
     minSdkVersion = 16
-    compileSdkVersion = 31
-    targetSdkVersion = 31
-    buildToolsVersion = '30.0.2'
+    compileSdkVersion = 35
+    targetSdkVersion = 35
     javaVersion = JavaVersion.VERSION_1_8
-    ndkVersion = "21.3.6528147"
-    cmakeVersion = "3.10.2"
+    ndkVersion = "29.0.14206865"
+    cmakeVersion = "3.22.1"
     abiFilters = "armeabi-v7a,arm64-v8a,x86,x86_64"
-    useASAN = false
+    useASAN = providers.gradleProperty("useASAN").map { it.toBoolean() }.orElse(false).get()
 
     POM_GROUP_ID = "com.iqiyi.xcrash"
     POM_ARTIFACT_ID = "xcrash-android-lib"

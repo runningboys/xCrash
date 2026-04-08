@@ -1,17 +1,22 @@
-apply plugin: 'com.android.library'
+plugins {
+    alias(libs.plugins.android.library)
+    id 'maven-publish'
+    id 'signing'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    namespace 'xcrash.lib'
+    compileSdk rootProject.ext.compileSdkVersion
     ndkVersion rootProject.ext.ndkVersion
+
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
         consumerProguardFiles 'proguard-rules.pro'
         externalNativeBuild {
             cmake {
                 abiFilters rootProject.ext.abiFilters.split(",")
-                if(rootProject.ext.useASAN) {
+                if (rootProject.ext.useASAN) {
                     arguments "-DANDROID_ARM_MODE=arm"
                     arguments "-DUSEASAN=ON"
                 }
@@ -27,6 +32,11 @@ android {
     compileOptions {
         sourceCompatibility rootProject.ext.javaVersion
         targetCompatibility rootProject.ext.javaVersion
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
     buildTypes {
         debug {

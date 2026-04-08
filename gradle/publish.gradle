@@ -1,5 +1,4 @@
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+import org.gradle.plugins.signing.Sign
 
 ext["signing.keyId"] = ''
 ext["signing.password"] = ''
@@ -22,29 +21,11 @@ if (secretPropsFile.exists()) {
     ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
 }
 
-task sourcesJar(type: Jar) {
-    archiveClassifier.set("sources")
-    from android.sourceSets.main.java.srcDirs
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set("javadoc")
-    from javadoc.destinationDir
-}
-
 project.afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
-
-                artifact sourcesJar
-                artifact javadocJar
 
                 artifactId POM_ARTIFACT_ID
                 groupId POM_GROUP_ID
@@ -97,6 +78,17 @@ project.afterEvaluate {
     }
 }
 
-signing {
-    sign publishing.publications
+def hasSigningConfig = ext["signing.keyId"] && ext["signing.password"] && ext["signing.secretKeyRingFile"]
+
+if (hasSigningConfig) {
+    signing {
+        required {
+            gradle.taskGraph.allTasks.any { it.name.startsWith("publish") && !it.name.toLowerCase().contains("mavenlocal") }
+        }
+        sign publishing.publications
+    }
+} else {
+    tasks.withType(Sign).configureEach {
+        enabled = false
+    }
 }
