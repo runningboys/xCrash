@@ -74,7 +74,7 @@ dependencyResolutionManagement {
 
 ```Gradle
 dependencies {
-    implementation 'com.github.runningboys.xCrash:xcrash-android-lib:3.1.0'
+    implementation 'com.github.runningboys:xCrash:3.1.0'
 }
 ```
 
