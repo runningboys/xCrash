@@ -8,6 +8,8 @@
 ![](https://img.shields.io/badge/Android-4.1%20--%2011-blue.svg?style=flat)
 ![](https://img.shields.io/badge/armeabi--v7a%20%7C%20arm64--v8a%20%7C%20x86%20%7C%20x86__64-blue.svg?style=flat)
 
+This fork is based on [xCrash](https://github.com/iqiyi/xCrash) and adds support for Android native libraries with 16 KB page size.
+
 xCrash provides the Android app with the ability to capture java crash, native crash and ANR. No root permission or any system permissions are required.
 
 <p align="left"><img src="doc/intro.png" alt="intro" width="320px"></p>
@@ -58,11 +60,21 @@ xCrash has been used in many Android apps (including iQIYI video) on different p
 
 ## Usage
 
-#### 1. Add dependency.
+#### 1. Add JitPack repository and dependency.
+
+```Gradle
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
 ```Gradle
 dependencies {
-    implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+    implementation 'com.github.runningboys.xCrash:xcrash-android-lib:3.1.0'
 }
 ```
 
@@ -126,8 +138,8 @@ If you want to build xCrash from source code. Follow this guide:
 
 ## Support
 
-* [GitHub Issues](https://github.com/iqiyi/xCrash/issues)
-* [GitHub Discussions](https://github.com/iqiyi/xCrash/discussions)
+* [GitHub Issues](https://github.com/runningboys/xCrash/issues)
+* [GitHub Discussions](https://github.com/runningboys/xCrash/discussions)
 * Email: <a href="mailto:caikelun@gmail.com">caikelun@gmail.com</a>, <a href="mailto:xuqnqn@qq.com">xuqnqn@qq.com</a>
 
 
